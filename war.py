@@ -17,7 +17,15 @@ import random
 # The following code creates a deck. You can do print(deck) inside playGame() to see how it looks.
 # ==============================================
 
-
+# ==============================================
+# At this point this is really all your code and I've contributed nothing other than the idea to play War as the game.
+# So I don't know how I can contribute at this point, I feel like I shouldn't even get points for this project.
+# I'm comparing your code to the cardGame.py file that I had created and its totally different (aka enhanced),
+# so it's hard for me to try and take your code and add things to it. I feel like I'd need you to walk me through
+# what you've done here before I could add anything to it.
+# I attempted to add the draw card function into your code but I couldn't get it to 'pop' a random card.
+# It comes up with a name error when I call "deck", I tried calling "playerDeck" but that didn't work either. 
+# ==============================================
 
 class Card:
     # Initializes the card with a suit and rank (value)
@@ -68,8 +76,14 @@ def makeDeck(deck):
             card = Card(rank, suit)
             deck.update({str(card) : card})
 
-def draw(playerDeck):
-    print("")
+# draw a random card from the deck
+def draw(deck):
+    rand_card = randint(0, len(deck) - 1)
+    return deck.pop(rand_card)
+
+# test if draw random card function works
+test_card = draw(deck)
+print("you drew a: ", test_card.rank, test_card.suit)
 
 def discard(card, playerDeck):
     print("")
