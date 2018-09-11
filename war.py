@@ -1,83 +1,91 @@
+import random
+
 # The deck is divided down the middle to both players (26 cards each)
 # Each player removes a card from the top of their deck. This is called a battle.
 # The player with the higher card wins the battle and takes both cards.
 # If the cards are of the same face value, both players continue to draw until a player loses the battle.
 # The cards that are won are placed at the bottom of the deck.
 
-<<<<<<< HEAD
-# TODO: Make a dictionary to store the deck. -- Kenya
-=======
->>>>>>> 53d9e48efe2db391a69646951fee2e37419e579f
 
-# TODO: Make a dictionary to store the deck.
-# SO below there's two different ways that the dictionaries could be made, let me know if either would work or if
-# we should come up with a different way, I am just trying out different things.
-# both of these feel like its too much code and there's prob an easier way but I'm not sure how?
-# does the dictionary need to be separate from the classes or can it be combined?
+# ==============================================
+# Kenya - I edited (and by edited I mean basically rewrote) your code.
+# The Card class did not have an __init__ method so it wouldn't have done anything as far as making an object.
+# I'm real sorry but all the 'Ace of Spades', 'Two of Hearts' that you wrote out was deleted.
+# You are right, it takes up a lot of space in code. Instead, I wrote a small function which initializes the deck
+# without the need to write it all out. See makeDeck().
+# There is still more to be done but I'm going to take a break for now. Been coding for like 2 or 3 hours.
+# The following code creates a deck. You can do print(deck) inside playGame() to see how it looks.
+# ==============================================
 
-# TODO: Create a Card class -- Kenya
-    # Each card should have a suit
-    # Each card should have a value (A, 2, 3, etc.)
-<<<<<<< HEAD
-# TODO: Create a Suit class -- Kenya
-=======
+
+
 class Card:
-    card_value = {
-        "TWO": 2,
-        "THREE": 3,
-        "FOUR": 4,
-        "FIVE": 5,
-        "SIX": 6,
-        "SEVEN": 7,
-        "EIGHT": 8,
-        "NINE": 9,
-        "TEN": 10,
-        "JACK": 11,
-        "QUEEN": 12,
-        "KING": 13,
-        "ACE": 14  # or should ace be 1? also, cant an ace be either a 1 or 11? Idk if that matters in this game though
-    }
+    # Initializes the card with a suit and rank (value)
+    def __init__(self, rank, suit):
+        self.suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
+        # Ranks contains None so that the index corresponds to the rank
+        self.ranks = [None, "Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"]
+
+        self.suit = self.suits[suit]
+        self.rank = self.ranks[rank]
+        self.value = 14 if rank == 1 else rank
+
+    # Defines how the card will be displayed when it is printed.
+    def __str__(self):
+        return '%s of %s' % (self.rank, self.suit)
+
+    def __repr__(self):
+        return self.__str__()
+
+    # The methods below allow card comparisons (cardA < cardB, etc.)
+    def __lt__(self, other):
+        return self.value < other.value
+    def __gt__(self, other):
+        return self.value > other.value
+    def __eq__(self, other):
+        return self.value == other.value
+    def __ne__(self, other):
+        return self.value != other.value
+    def __ge__(self, other):
+        return self.value >= other.value
+    def __le__(self, other):
+        return self.value <= other.value
 
 
-# TODO: Create a Suit class
-class Suit:
-    card_suit = {
-        "SPADES": "spades",
-        "CLUBS": "clubs",
-        "HEARTS": "hearts",
-        "DIAMONDS": "diamonds"
-    }
+def playGame():
+    print("===== WAR =====")
+    deck = {}
+    makeDeck(deck)
+    # TODO: Give players their cards [try random.choice(mydict.values())]
+    # TODO: Make the war(), battle() functions do something
+    # TODO: Create a while loop that runs the game
 
 
-# this is the second way I found we could do a dictionary for the deck but its a lot of code
-# creates dictionary of cards and their values
-# stored as key-value pairs
-deck = {'Ace of Spades': 1, '2 of Spades': 2, '3 of Spades': 3, '4 of Spades': 4,
-        '5 of Spades': 5, '6 of Spades': 6, '7 of Spades': 7, '8 of Spades': 8,
-        '9 of Spades': 9, '10 of Spades': 10, 'Jack of Spades': 11, 'Queen of Spades': 12,
-        'King of Spades': 13,
+def makeDeck(deck):
+    # Initializes the playing deck (Ace of Spades, Ace of Hearts, Ace of Diamonds, Ace of Clubs, 2 of Spades, etc.)
+    for rank in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]:
+        for suit in [0, 1, 2, 3]:
+            card = Card(rank, suit)
+            deck.update({str(card) : card})
 
-        'Ace of Hearts': 1, '2 of Hearts': 2, '3 of Hearts': 3, '4 of Hearts': 4,
-        '5 of Hearts': 5, '6 of Hearts': 6, '7 of Hearts': 7, '8 of Hearts': 8,
-        '9 of Hearts': 9, '10 of Hearts': 10, 'Jack of Hearts': 11, 'Queen of Hearts': 12,
-        'King of Hearts': 13,
+def draw(playerDeck):
+    print("")
 
-        'Ace of Diamonds': 1, '2 of Diamonds': 2, '3 of Diamonds': 3, '4 of Diamonds': 4,
-        '5 of Diamonds': 5, '6 of Diamonds': 6, '7 of Diamonds': 7, '8 of Diamonds': 8,
-        '9 of Diamonds': 9, '10 of Diamonds': 10, 'Jack of Diamonds': 11, 'Queen of Diamonds': 12,
-        'King of Diamonds': 13,
+def discard(card, playerDeck):
+    print("")
 
-        'Ace of Clubs': 1, '2 of Clubs': 2, '3 of Clubs': 3, '4 of Clubs': 4,
-        '5 of Clubs': 5, '6 of Clubs': 6, '7 of Clubs': 7, '8 of Clubs': 8,
-        '9 of Clubs': 9, '10 of Clubs': 10, 'Jack of Clubs': 11, 'Queen of Clubs': 12,
-        'King of Clubs': 13}
+def battle():
+    print("")
+
+def war():
+    print("")
 
 
 # TODO: Create a makeDeck() function which creates and initializes the playing deck.
 # TODO: Create a draw() function which draws from the top of each player's deck
 # TODO: Create a discard() function which puts the cards at the bottom of the player's deck.
 # TODO: Create battle(), war() functions which perform the expected action
->>>>>>> 53d9e48efe2db391a69646951fee2e37419e579f
-
 
 # If there's more to do, divvy it up evenly?
+
+playGame()
