@@ -6,7 +6,6 @@ import random
 # If the cards are of the same face value, both players continue to draw until a player loses the battle.
 # The cards that are won are placed at the bottom of the deck.
 
-
 # ==============================================
 # Kenya - I edited (and by edited I mean basically rewrote) your code.
 # The Card class did not have an __init__ method so it wouldn't have done anything as far as making an object.
@@ -51,14 +50,166 @@ class Card:
     def __le__(self, other):
         return self.value <= other.value
 
+class Player:
+    playerCount = 0
 
-def playGame():
-    print("===== WAR =====")
+    def __init__(self):
+        Player.playerCount += 1
+        self.name = self.setName()
+        self.score = 0
+        self.hand = {}
+
+    def setName(self):
+        return input("Player " + str(Player.playerCount) + ", please enter your name: ")
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.__str__()
+
+    def addScore(self, score):
+        self.score += score
+
+    def setScore(self, score):
+        self.score = score
+
+    def getScore(self):
+        return self.score
+
+    def setHand(self, hand):
+        self.hand = hand
+
+    def getHand(self):
+        return self.hand
+
+    def drawCard(self):
+        card = next(iter(self.hand.values()))
+        print(self.name + " draws the " + str(card) + ". " + "Cards remaining: " + str(self.cardCount()))
+        return card
+
+    def viewHand(self):
+        for card in enumerate(self.hand, start=1):
+            print(card)
+
+    def discard(self, card):
+        return self.hand.pop(str(card))
+
+    def hasCards(self):
+        return True if self.cardCount() > 0 else False
+
+    def cardCount(self):
+        return len(self.hand)
+
+def newGame():
+    print("========== WAR: Card Game ==========")
     deck = {}
+    player1 = Player()
+    player2 = Player()
+
     makeDeck(deck)
-    # TODO: Give players their cards [try random.choice(mydict.values())]
-    # TODO: Make the war(), battle() functions do something
-    # TODO: Create a while loop that runs the game
+    dealCards(deck, player1, player2)
+
+    turnCount = 1
+    while True:
+        if player1.hasCards() and player2.hasCards():
+            print("========== TURN " + str(turnCount) + " ==========")
+            card1 = player1.drawCard()
+            card2 = player2.drawCard()
+
+            # In unison, each player reveals the top card of their deck. This is a battle.
+            playCards(player1, card1, player2, card2)
+            turnCount += 1
+            continue
+
+        else:
+
+            break
+    gameOver(player1, player2)
+
+
+
+def playCards(player1, card1, player2, card2):
+    hand1 = player1.getHand()
+    hand2 = player2.getHand()
+
+    # The player with the higher card takes both of the cards played and moves them to their stack.
+    if card1 > card2:
+        hand1.update({str(card1): player1.discard(card1)})
+        hand1.update({str(card2) : player2.discard(card2)})
+        print(player1.name + " wins the battle, and takes the " + str(card2) + ".\n")
+
+    elif card1 < card2:
+        hand2.update({str(card1) : player1.discard(card1)})
+        hand2.update({str(card2): player2.discard(card2)})
+        print(player2.name + " wins the battle, and takes the " + str(card1) + ".\n")
+
+    # If the two cards played are of equal value, then there is a war.
+    elif card1 == card2:
+        print("Both players played a " + str(card1.rank) + ". THIS MEANS WAR!\n")
+        war(player1, card1, player2, card2)
+
+    return
+
+def war(player1, card1, player2, card2):
+    print("========== WAR ==========")
+    hand1 = player1.getHand()
+    hand2 = player2.getHand()
+
+    stack = {}
+    stack.update({str(card1): player1.discard(card1)})
+    stack.update({str(card2): player2.discard(card2)})
+
+    while True:
+        # Player 1 draws 2 cards. One face-down, one face-up. They are added to the stack.
+        if player1.hasCards() and player2.hasCards():
+            # Player 1 draws a card
+            warCard1 = player1.drawCard()
+            stack.update({str(warCard1): player1.discard(warCard1)})
+
+            # Player 1 draws a second card (if they have one)
+            if player1.hasCards():
+                print("The " + str(warCard1) + " is placed face-down.")
+                warCard2 = player1.drawCard()
+                stack.update({str(warCard2): player1.discard(warCard2)})
+            else:
+                warCard2 = warCard1
+
+            # Player 2 draws a card
+            warCard3 = player2.drawCard()
+            stack.update({str(warCard3): player2.discard(warCard3)})
+
+            # Player 2 draws a second card (if they have one)
+            if player2.hasCards():
+                print("The " + str(warCard3) + " is placed face-down.")
+                warCard4 = player2.drawCard()
+                stack.update({str(warCard4): player2.discard(warCard4)})
+            else:
+                warCard4 = warCard3
+
+        else:
+            gameOver(player1, player2)
+
+        print("--------------------")
+
+        # The player with the higher-value card wins all of the cards in the stack.
+        if warCard2 < warCard4:
+            hand2.update(stack)
+            print("\n" + player2.name + " wins the war, and takes the following cards:")
+            for card in enumerate(stack, start=1):
+                print(card)
+            return
+
+        elif warCard2 > warCard4:
+            hand1.update(stack)
+            print("\n" + player1.name + " wins the war, and takes the following cards:")
+            for card in enumerate(stack, start=1):
+                print(card)
+            return
+
+        # If the cards are the same value, the war continues.
+        elif warCard2 == warCard4:
+            print("\nThe war continues!\n")
 
 
 def makeDeck(deck):
@@ -68,24 +219,34 @@ def makeDeck(deck):
             card = Card(rank, suit)
             deck.update({str(card) : card})
 
-def draw(playerDeck):
-    print("")
+def dealCards(deck, player1, player2):
+    hand1 = player1.getHand()
+    hand2 = player2.getHand()
 
-def discard(card, playerDeck):
-    print("")
+    while len(deck) > 0:
+        # Randomly select a card from the deck
+        card = random.choice(list(deck.keys()))
+        # Update Player 1's hand with the card popped from the deck
+        hand1.update({str(card) : deck.pop(card)})
 
-def battle():
-    print("")
+        # Randomly select a card from the deck
+        card = random.choice(list(deck.keys()))
+        # Update Player 2's hand with the card popped from the deck
+        hand2.update({str(card): deck.pop(card)})
 
-def war():
-    print("")
+def gameOver(player1, player2):
+    print("========== GAME OVER ==========")
+    if player1.cardCount() == 0:
+        print("\n" + player1.name + " is out of cards. " + player2.name + " wins!")
 
+    elif player2.cardCount() == 0:
+            print("\n" + player2.name + " is out of cards. " + player1.name + " wins!")
 
-# TODO: Create a makeDeck() function which creates and initializes the playing deck.
-# TODO: Create a draw() function which draws from the top of each player's deck
-# TODO: Create a discard() function which puts the cards at the bottom of the player's deck.
-# TODO: Create battle(), war() functions which perform the expected action
+    else:
+        print("Player 1 has cards? " + str(player1.hasCards()))
+        print(player1.cardCount())
+        print("Player 2 has cards? " + str(player2.hasCards()))
+        print(player2.cardCount())
 
-# If there's more to do, divvy it up evenly?
-
-playGame()
+    exit()
+newGame()
