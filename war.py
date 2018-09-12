@@ -51,6 +51,15 @@ import random
 # TODO: If during a war, the drawn cards are a tie, they should return to their respective player.
 # TODO: Update print() statements to display the correct output. [ex. If a tie occurs during a war, display "The war ends in a draw."]
 
+# ==============================================
+# Alex - I made a new branch so I can try and create the "instant war" game without messing up the code in the master.
+# But class is already tomorrow and I have two other classes I really need to work on tonight
+# so I don't even know if/when I'll have time to try and do the instant war game.
+# Plus it's hard to like take someone else's code, which in my eyes is advanced, and then try to modify it.
+# We'll talk more in class about what we're going to do but...
+# I'm really feeling like I shouldn't take any credit for this. You're just too good lol
+# ==============================================
+
 
 class Card:
     # Initializes the card with a suit and rank (value)
