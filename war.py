@@ -51,6 +51,7 @@ import random
 # TODO: If during a war, the drawn cards are a tie, they should return to their respective player.
 # TODO: Update print() statements to display the correct output. [ex. If a tie occurs during a war, display "The war ends in a draw."]
 
+# TEST 
 
 class Card:
     # Initializes the card with a suit and rank (value)
