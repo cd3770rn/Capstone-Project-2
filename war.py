@@ -7,24 +7,43 @@ import random
 # The cards that are won are placed at the bottom of the deck.
 
 # ==============================================
-# Kenya - I edited (and by edited I mean basically rewrote) your code.
-# The Card class did not have an __init__ method so it wouldn't have done anything as far as making an object.
-# I'm real sorry but all the 'Ace of Spades', 'Two of Hearts' that you wrote out was deleted.
-# You are right, it takes up a lot of space in code. Instead, I wrote a small function which initializes the deck
-# without the need to write it all out. See makeDeck().
-# There is still more to be done but I'm going to take a break for now. Been coding for like 2 or 3 hours.
-# The following code creates a deck. You can do print(deck) inside playGame() to see how it looks.
-# ==============================================
+# Kenya - I apologize for making it look like I did
+# all of the work. That wasn't my intention. I just
+# started coding and the next thing I knew I had done
+# everything that there was to do. Since you originally
+# created the object oriented side of things, I'm more
+# than willing to credit you for that, even though I
+# rearranged and reworked the bulk of it.
+#
+# The game is finished. In my testing, I did find
+# a bit of an interesting quirk with War, and in doing
+# so I found a way where you can distinguish credit.
+#
+# First, I would make a new branch for this version.
+# It's not COMPLETELY necessary but it's easier to work
+# that way. Don't worry if you can't figure it out, it's
+# not a huge deal.
+#
+# Some instances of War can run (seemingly) forever.
+# I have tested the code extensively, and had a game where
+# it ran for over 2 million turns -- AND IT'S RUNNING CORRECTLY!
+# So, what I think would be a good challenge for you is to
+# try to recreate the 'Instant War' variation as shown
+# on Wikipedia.
+#
+# It works as follows:
+# Any card that loses a battle is dead, or eliminated from the game.
+# The card that wins returns to the original owner. (Let's go with
+# 'whoever currently owns the card' instead of the original owner,
+# just for the sake of simplicity).
+# When cards tie, only one card is played by each player in the war.
+# A draw is possible, and gameplay is much quicker.
+#
+# Take the code here and make the changes required for the 'Instant War'
+# variation. If you can't get it working, that's fine. What we have here
+# is fully functional.
 
-# ==============================================
-# At this point this is really all your code and I've contributed nothing other than the idea to play War as the game.
-# So I don't know how I can contribute at this point, I feel like I shouldn't even get points for this project.
-# I'm comparing your code to the cardGame.py file that I had created and its totally different (aka enhanced),
-# so it's hard for me to try and take your code and add things to it. I feel like I'd need you to walk me through
-# what you've done here before I could add anything to it.
-# I attempted to add the draw card function into your code but I couldn't get it to 'pop' a random card.
-# It comes up with a name error when I call "deck", I tried calling "playerDeck" but that didn't work either. 
-# ==============================================
+
 
 class Card:
     # Initializes the card with a suit and rank (value)
@@ -227,7 +246,7 @@ def makeDeck(deck):
             card = Card(rank, suit)
             deck.update({str(card) : card})
 
-<<<<<<< HEAD
+
 def dealCards(deck, player1, player2):
     hand1 = player1.getHand()
     hand2 = player2.getHand()
@@ -259,32 +278,3 @@ def gameOver(player1, player2):
 
     exit()
 newGame()
-=======
-# draw a random card from the deck
-def draw(deck):
-    rand_card = randint(0, len(deck) - 1)
-    return deck.pop(rand_card)
-
-# test if draw random card function works
-test_card = draw(deck)
-print("you drew a: ", test_card.rank, test_card.suit)
-
-def discard(card, playerDeck):
-    print("")
-
-def battle():
-    print("")
-
-def war():
-    print("")
-
-
-# TODO: Create a makeDeck() function which creates and initializes the playing deck.
-# TODO: Create a draw() function which draws from the top of each player's deck
-# TODO: Create a discard() function which puts the cards at the bottom of the player's deck.
-# TODO: Create battle(), war() functions which perform the expected action
-
-# If there's more to do, divvy it up evenly?
-
-playGame()
->>>>>>> 6d299e37df0dc3ee1ef97da609dbbd3fd1d9de4c
