@@ -42,7 +42,14 @@ import random
 # Take the code here and make the changes required for the 'Instant War'
 # variation. If you can't get it working, that's fine. What we have here
 # is fully functional.
-
+#
+# The code to modify is inside of war().
+# TODO: card1 and card2 inside of war() should return to the respective player instead of going into the stack.
+# TODO: Each player should only draw a single card. Remove the code which has them draw a second card.
+# TODO: If a card loses, the player should discard it. Cards should NOT go to the stack. [ex. player1.discard(card)]
+# TODO: If a card wins, it should return to the player. The winner should NOT receive the contents of the stack. [ex. hand1.update({str(card) : card})]
+# TODO: If during a war, the drawn cards are a tie, they should return to their respective player.
+# TODO: Update print() statements to display the correct output. [ex. If a tie occurs during a war, display "The war ends in a draw."]
 
 
 class Card:
@@ -154,8 +161,6 @@ def newGame():
             break
     gameOver(player1, player2)
 
-
-
 def playCards(player1, card1, player2, card2):
     hand1 = player1.getHand()
     hand2 = player2.getHand()
@@ -180,12 +185,12 @@ def playCards(player1, card1, player2, card2):
 
 def war(player1, card1, player2, card2):
     print("========== WAR ==========")
-    hand1 = player1.getHand()
-    hand2 = player2.getHand()
+    hand1 = player1.getHand() # Player 1's hand
+    hand2 = player2.getHand() # Player 2's hand
 
     stack = {}
-    stack.update({str(card1): player1.discard(card1)})
-    stack.update({str(card2): player2.discard(card2)})
+    stack.update({str(card1): player1.discard(card1)}) # Add card1 to the stack
+    stack.update({str(card2): player2.discard(card2)}) # Add card2 to the stack
 
     while True:
         # Player 1 draws 2 cards. One face-down, one face-up. They are added to the stack.
@@ -199,7 +204,7 @@ def war(player1, card1, player2, card2):
                 print("The " + str(warCard1) + " is placed face-down.")
                 warCard2 = player1.drawCard()
                 stack.update({str(warCard2): player1.discard(warCard2)})
-            else:
+            else: # The player is out of cards, and the first card they played should be used in the war
                 warCard2 = warCard1
 
             # Player 2 draws a card
@@ -211,24 +216,24 @@ def war(player1, card1, player2, card2):
                 print("The " + str(warCard3) + " is placed face-down.")
                 warCard4 = player2.drawCard()
                 stack.update({str(warCard4): player2.discard(warCard4)})
-            else:
+            else:# The player is out of cards, and the first card they played should be used in the war
                 warCard4 = warCard3
 
-        else:
+        else: # One of the players is out of cards, and the game is over.
             gameOver(player1, player2)
 
         print("--------------------")
 
         # The player with the higher-value card wins all of the cards in the stack.
-        if warCard2 < warCard4:
-            hand2.update(stack)
+        if warCard2 < warCard4: # If warCard2 loses...
+            hand2.update(stack) # Player 2 takes all of the cards in the stack
             print("\n" + player2.name + " wins the war, and takes the following cards:")
             for card in enumerate(stack, start=1):
                 print(card)
             return
 
-        elif warCard2 > warCard4:
-            hand1.update(stack)
+        elif warCard2 > warCard4: # If warCard4 loses...
+            hand1.update(stack) # Player 1 takes all of the cards in the stack
             print("\n" + player1.name + " wins the war, and takes the following cards:")
             for card in enumerate(stack, start=1):
                 print(card)
@@ -245,7 +250,6 @@ def makeDeck(deck):
         for suit in [0, 1, 2, 3]:
             card = Card(rank, suit)
             deck.update({str(card) : card})
-
 
 def dealCards(deck, player1, player2):
     hand1 = player1.getHand()
