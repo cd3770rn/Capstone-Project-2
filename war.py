@@ -48,6 +48,9 @@ class Player:
         self.score = 0
         self.hand = {}
 
+        if self.name == "":
+            self.name = "Player " + str(Player.playerCount)
+
     def setName(self):
         return input("Player " + str(Player.playerCount) + ", please enter your name: ")
 
